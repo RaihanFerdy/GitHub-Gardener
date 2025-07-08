@@ -1,0 +1,47 @@
+# Auto commit every hour with timestamp in README.md
+
+name: Hourly Auto Commit
+
+on:
+  # Trigger on push or pull request to main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Run this workflow automatically every hour
+  schedule:
+    - cron: '0 * * * *'  # Every hour at minute 0
+
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set timezone to Asia/Jakarta
+        run: |
+          sudo timedatectl set-timezone Asia/Jakarta
+
+      - name: Update README.md with current timestamp
+        run: |
+          echo "# Auto Commit Log" > README.md
+          echo "" >> README.md
+          echo "Last updated: $(date '+%A, %d-%m-%Y %H:%M')" >> README.md
+          echo "" >> README.md
+          echo "---" >> README.md
+          echo "" >> README.md
+          echo "This repository is automatically updated every hour using GitHub Actions." >> README.md
+
+      - name: Commit and push changes
+        run: |
+          git add README.md
+          git config user.name 'RaihanFerdy'
+          git config user.email 'raihanferdy10@gmail.com'
+          git commit -m "Auto update: $(date '+%A, %d-%m-%Y %H:%M')" || exit 0
+          git push
