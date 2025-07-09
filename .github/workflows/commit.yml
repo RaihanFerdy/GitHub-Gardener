@@ -14,7 +14,7 @@ on:
 
   # Run automatically every hour
   schedule:
-    - cron: '* * * * *'  # Every minute 
+    - cron: '0 * * * *'  # Every hour 
 
   # Allow manual run from the Actions tab
   workflow_dispatch:
@@ -47,7 +47,7 @@ jobs:
           echo "" >> README.md
           echo "---" >> README.md
           echo "" >> README.md
-          echo "This repository is automatically updated every minute using GitHub Actions." >> README.md
+          echo "This repository is automatically updated every hour using GitHub Actions." >> README.md
 
       # Commit and push changes
       - name: Commit and push changes
